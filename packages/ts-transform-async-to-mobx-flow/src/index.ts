@@ -5,7 +5,6 @@ export interface Options {
 }
 
 const actionIdentifier = 'action';
-const boundIdentifier = 'bound';
 
 /** ts-jest calls this method for their astTransformers */
 export function factory() {
@@ -220,7 +219,7 @@ function transformFunction(
  * A helper to update method declaration and strip the async keyword from modifiers
  */
 function transformMethodDeclaration(node: ts.MethodDeclaration, newFunctionBlock: ts.Block) {
-  const otherDecorators = filterOutTransformToMobxFlowDecorators(node.decorators);
+  const otherDecorators = filterOutActionDecorators(node.decorators);
 
   return ts.updateMethod(
     node,
@@ -243,7 +242,7 @@ function transformPropertyDeclaration(
   node: ts.PropertyDeclaration,
   newFunctionBlock: ts.ArrowFunction | ts.FunctionExpression,
 ) {
-  const otherDecorators = filterOutTransformToMobxFlowDecorators(node.decorators);
+  const otherDecorators = filterOutActionDecorators(node.decorators);
 
   return ts.updateProperty(
     node,
@@ -346,7 +345,7 @@ function hasActionDecorators(decorators: ts.NodeArray<ts.Decorator> | undefined)
  * Returns all the decorators except for @action
  * Ensures to return undefined if the array is empty
  */
-function filterOutTransformToMobxFlowDecorators(
+function filterOutActionDecorators(
   decorators: ts.NodeArray<ts.Decorator> | undefined,
 ): ts.Decorator[] | undefined {
   return (
