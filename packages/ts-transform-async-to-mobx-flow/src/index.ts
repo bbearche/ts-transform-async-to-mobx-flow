@@ -44,9 +44,7 @@ function visitSourceFile(
       const fn = node.arguments[0];
 
       if (!isAsyncFunction(fn)) {
-        throw new Error(
-          errorMessage(`Could not resolve expression as async function: ${node.getFullText()}`),
-        );
+        return;
       }
 
       if (ts.isArrowFunction(fn) || ts.isFunctionExpression(fn)) {
@@ -70,9 +68,7 @@ function visitSourceFile(
       node.body
     ) {
       if (!isAsyncFunction(node)) {
-        throw new Error(
-          errorMessage(`Could not resolve expression as async function: ${node.getFullText()}`),
-        );
+        return;
       }
 
       transformed = true;
@@ -95,9 +91,7 @@ function visitSourceFile(
       const fn = node.initializer;
 
       if (!isAsyncFunction(fn)) {
-        throw new Error(
-          errorMessage(`Could not resolve expression as async function: ${node.getFullText()}`),
-        );
+        return;
       }
 
       if (ts.isArrowFunction(fn) || ts.isFunctionExpression(fn)) {
