@@ -23,7 +23,7 @@
   ],
   "repository": "git@github.com:aurornz/ts-transform-async-to-mobx-flow.git",
   "scripts": {
-    "build": "rm -rf lib && tsc",
+    "build": "rimraf lib && tsc",
     "test": "jest",
     "prepare": "npm run build && cp ../../README.md ./README.md"
   },
