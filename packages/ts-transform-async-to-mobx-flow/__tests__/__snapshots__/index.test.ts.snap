@@ -1,23 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Converts function marked as transformToMobxFlow 1`] = `
-"import * as mobx from \\"mobx\\";
-/// <reference path=\\"../../transformToMobxFlow.d.ts\\" />
+exports[`Converts function marked as action 1`] = `
+"import * as mobx_1 from \\"mobx\\";
 declare let randomDecorator: any;
-export const fn = (input) => { return mobx.flow(function* fn() {
+import { action } from 'mobx';
+export const fn = (input) => { return mobx_1.flow(function* fn() {
     return yield Promise.resolve(input);
 }).call(this); };
-export const fn2 = function test(input) { return mobx.flow(function* test() {
+export const fn2 = function test(input) { return mobx_1.flow(function* test() {
     return yield Promise.resolve(input);
 }).call(this); };
-export const fn3 = function (input) { return mobx.flow(function* fn3() {
+export const fn3 = function (input) { return mobx_1.flow(function* fn3() {
     return yield Promise.resolve(input);
 }).call(this); };
 export class Test {
     test: number = 0;
     constructor() {
-        var nestedFlow = () => { return mobx.flow(function* nestedFlow() {
-            var anotherNestedFlow = () => { return mobx.flow(function* anotherNestedFlow() {
+        var nestedFlow = () => { return mobx_1.flow(function* nestedFlow() {
+            var anotherNestedFlow = () => { return mobx_1.flow(function* anotherNestedFlow() {
                 this.test = 5;
                 yield Promise.resolve(100);
             }).call(this); };
@@ -25,16 +25,16 @@ export class Test {
             yield anotherNestedFlow();
         }).call(this); };
     }
-    func() { return mobx.flow(function* func() {
+    func() { return mobx_1.flow(function* func() {
         this.test = 5;
         yield Promise.resolve(100);
     }).call(this); }
-    funcBound = () => { return mobx.flow(function* funcBound() {
+    funcBound = () => { return mobx_1.flow(function* funcBound() {
         this.test = 5;
         yield Promise.resolve(100);
     }).call(this); };
     @randomDecorator
-    funcNonBound = function (this: Test) { return mobx.flow(function* funcNonBound() {
+    funcNonBound = function (this: Test) { return mobx_1.flow(function* funcNonBound() {
         this.test = 5;
         yield Promise.resolve(100);
     }).call(this); };
@@ -42,7 +42,7 @@ export class Test {
 "
 `;
 
-exports[`Does not convert function not marked as transformToMobxFlow 1`] = `
+exports[`Does not convert function not marked as action 1`] = `
 "export async function fn(input: string) {
     return await Promise.resolve(input);
 }

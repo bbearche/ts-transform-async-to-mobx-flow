@@ -3,7 +3,7 @@ import fs from 'fs';
 
 import createTransformer from '../src';
 
-it('Does not convert function not marked as transformToMobxFlow', () => {
+it('Does not convert function not marked as action', () => {
   const path = require.resolve('./fixtures/no-async-decorated');
 
   const source = fs.readFileSync(path).toString('utf8');
@@ -12,7 +12,7 @@ it('Does not convert function not marked as transformToMobxFlow', () => {
   expect(result).toMatchSnapshot();
 });
 
-it('Converts function marked as transformToMobxFlow', () => {
+it('Converts function marked as action', () => {
   const path = require.resolve('./fixtures/all-async-decorated');
 
   const source = fs.readFileSync(path).toString('utf8');
@@ -21,37 +21,29 @@ it('Converts function marked as transformToMobxFlow', () => {
   expect(result).toMatchSnapshot();
 });
 
-describe('Throw error when cannot parse body of the transformToMobxFlow', () => {
+describe('Ignore body when not an async function', () => {
   it('non-async arrow function', () => {
     const source = `
-const fn = transformToMobxFlow(input => {
+const fn = action(input => {
   this.delay(input);
 });`;
 
-    expect(() => getTransformedOutput(source)).toThrowError(
-      'Could not resolve expression as async function',
-    );
+    verifyOutput(getTransformedOutput(source), source);
   });
 
   it('non-async function', () => {
     const source = `
-const fn = transformToMobxFlow(function test (input) {
+const fn = action(function test(input) {
   this.delay(input);
 });`;
-
-    expect(() => getTransformedOutput(source)).toThrowError(
-      'Could not resolve expression as async function',
-    );
+    verifyOutput(getTransformedOutput(source), source);
   });
 
   it('function passed as parameter', () => {
     const source = `
-const fn = transformToMobxFlow(randomFunction);
+const fn = action(randomFunction);
 `;
-
-    expect(() => getTransformedOutput(source)).toThrowError(
-      'Could not resolve expression as async function',
-    );
+    verifyOutput(getTransformedOutput(source), source);
   });
 
   describe('class context', () => {
@@ -59,40 +51,34 @@ const fn = transformToMobxFlow(randomFunction);
       const source = `
 class Test {
   // non-async function
-  @transformToMobxFlow
+  @action
   func() {
     this.test = 5;
   }
 }`;
-      expect(() => getTransformedOutput(source)).toThrowError(
-        'Could not resolve expression as async function',
-      );
+      verifyOutput(getTransformedOutput(source), source);
     });
 
     it('non-async arrow function', () => {
       const source = `
   class Test {
     // non-async arrow function
-    @transformToMobxFlow
+    @action
     funcBound = () => {
       this.test = 5;
     };
   }`;
-      expect(() => getTransformedOutput(source)).toThrowError(
-        'Could not resolve expression as async function',
-      );
+      verifyOutput(getTransformedOutput(source), source);
     });
 
     it('function passed as parameter', () => {
       const source = `
   class Test {
     // function passed as parameter
-    @transformToMobxFlow
+    @action
     funcNonBound = randomFunction;
   }`;
-      expect(() => getTransformedOutput(source)).toThrowError(
-        'Could not resolve expression as async function',
-      );
+      verifyOutput(getTransformedOutput(source), source);
     });
   });
 });
@@ -102,7 +88,7 @@ it('Flow import does not conflict with declared variables', () => {
 import * as mobx from 'mobx';
 let mobx_1 = '';
 
-const fn = transformToMobxFlow(async input => {
+const fn = action(async input => {
   return await Promise.resolve(input);
 });
 `;
@@ -120,7 +106,7 @@ const fn = (input) => { return mobx_2.flow(function* fn() {
 
 it('Transpiled correctly to ES5', () => {
   const source = `
-const fn = transformToMobxFlow(async input => {
+const fn = action(async input => {
   return await Promise.resolve(input);
 });
   `;
@@ -170,5 +156,6 @@ function removeEmptyLines(input: string) {
   return input
     .split(/[\n\r]/g)
     .filter(x => !/^\s*$/.test(x))
+    .map(x => x.trim())
     .join('\n');
 }
