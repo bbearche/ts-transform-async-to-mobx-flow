@@ -220,9 +220,11 @@ function transformFunction(
  * A helper to update method declaration and strip the async keyword from modifiers
  */
 function transformMethodDeclaration(node: ts.MethodDeclaration, newFunctionBlock: ts.Block) {
+  const otherDecorators = filterOutTransformToMobxFlowDecorators(node.decorators);
+
   return ts.updateMethod(
     node,
-    node.decorators,
+    otherDecorators,
     filterOutAsyncModifier(node.modifiers),
     node.asteriskToken,
     node.name,
@@ -241,9 +243,11 @@ function transformPropertyDeclaration(
   node: ts.PropertyDeclaration,
   newFunctionBlock: ts.ArrowFunction | ts.FunctionExpression,
 ) {
+  const otherDecorators = filterOutTransformToMobxFlowDecorators(node.decorators);
+
   return ts.updateProperty(
     node,
-    node.decorators,
+    otherDecorators,
     filterOutAsyncModifier(node.modifiers),
     node.name,
     node.questionToken,
@@ -336,6 +340,26 @@ function hasActionDecorators(decorators: ts.NodeArray<ts.Decorator> | undefined)
     return true;
   }
   return false;
+}
+
+/**
+ * Returns all the decorators except for @action
+ * Ensures to return undefined if the array is empty
+ */
+function filterOutTransformToMobxFlowDecorators(
+  decorators: ts.NodeArray<ts.Decorator> | undefined,
+): ts.Decorator[] | undefined {
+  return (
+    decorators &&
+    decorators.reduce<ts.Decorator[] | undefined>((acc, x) => {
+      // skip @transformToMobxFlow decorator
+      if (ts.isIdentifier(x.expression) && x.expression.text === actionIdentifier) {
+        return acc;
+      }
+
+      return acc ? [...acc, x] : [x];
+    }, undefined)
+  );
 }
 
 /**
