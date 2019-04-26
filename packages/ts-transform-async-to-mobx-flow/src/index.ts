@@ -351,7 +351,7 @@ function filterOutActionDecorators(
   return (
     decorators &&
     decorators.reduce<ts.Decorator[] | undefined>((acc, x) => {
-      // skip @transformToMobxFlow decorator
+      // skip @action decorator
       if (ts.isIdentifier(x.expression) && x.expression.text === actionIdentifier) {
         return acc;
       }
