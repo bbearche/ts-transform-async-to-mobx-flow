@@ -43,7 +43,7 @@ function visitSourceFile(
       const fn = node.arguments[0];
 
       if (!isAsyncFunction(fn)) {
-        return;
+        return ts.visitEachChild(node, visitor, context);
       }
 
       if (ts.isArrowFunction(fn) || ts.isFunctionExpression(fn)) {
@@ -67,7 +67,7 @@ function visitSourceFile(
       node.body
     ) {
       if (!isAsyncFunction(node)) {
-        return;
+        return ts.visitEachChild(node, visitor, context);
       }
 
       transformed = true;
@@ -90,7 +90,7 @@ function visitSourceFile(
       const fn = node.initializer;
 
       if (!isAsyncFunction(fn)) {
-        return;
+        return ts.visitEachChild(node, visitor, context);
       }
 
       if (ts.isArrowFunction(fn) || ts.isFunctionExpression(fn)) {
