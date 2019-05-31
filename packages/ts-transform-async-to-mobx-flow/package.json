@@ -18,7 +18,7 @@
     "test": "__tests__"
   },
   "files": [
-    "lib",
+    "lib"
   ],
   "repository": "git@github.com:aurornz/ts-transform-async-to-mobx-flow.git",
   "scripts": {
