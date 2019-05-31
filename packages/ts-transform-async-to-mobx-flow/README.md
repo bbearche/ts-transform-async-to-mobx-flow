@@ -69,13 +69,13 @@ class Test {
 ## How to install
 
 ```
-npm i ts-transform-async-to-mobx-flow -D
+npm i DarkCow/ts-transform-async-to-mobx-flow#feature/action-decorators -D
 ```
 
 or
 
 ```
-yarn add ts-transform-async-to-mobx-flow -D
+yarn add DarkCow/ts-transform-async-to-mobx-flow#feature/action-decorators -D
 ```
 
 ## How to use
