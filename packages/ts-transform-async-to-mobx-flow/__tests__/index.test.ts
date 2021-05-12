@@ -120,7 +120,7 @@ describe('Ignore transforming nested functions #1', () => {
 
   it('Inline function', () => {
     const source = `
-const fn = transformToMobxFlow(async (input: number) => {
+const fn = action(async (input: number) => {
   var nestedFunc = async () => {
     return await Promise.resolve(input);
   };
@@ -151,7 +151,7 @@ const fn = (input: number) => { return mobx.flow(function* fn_mobxFlow() {
   it('Class member function', () => {
     const source = `
 class Test {
-  @transformToMobxFlow
+  @action
   async func(input: number) {
     var nestedFunc = async () => {
       return await Promise.resolve(input);
@@ -191,7 +191,7 @@ it('Generator function should use unique name #2', () => {
 import { someFunc } from './someFile';
 
 class SomeClass {
-  @transformToMobxFlow
+  @action
   someFunc = async () => {
     await someFunc();
   }
