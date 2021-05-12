@@ -29,6 +29,12 @@ export class Test {
     await Promise.resolve(100);
   }
 
+  @action.bound
+  async funcActionBound() {
+    this.test = 5;
+    await Promise.resolve(100);
+  }
+
   @action
   funcBound = async () => {
     this.test = 5;

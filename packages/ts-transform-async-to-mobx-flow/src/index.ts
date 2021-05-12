@@ -5,6 +5,7 @@ export interface Options {
 }
 
 const actionIdentifier = 'action';
+const actionBoundIdentifier = 'action.bound';
 
 /** ts-jest calls this method for their astTransformers */
 export function factory() {
@@ -332,12 +333,16 @@ function resolveFunctionName(node: ts.Node, fn: ts.FunctionExpression | ts.Arrow
   return name;
 }
 
+function isActionDecorator(x: ts.Decorator) {
+  if (ts.isIdentifier(x.expression)) return x.expression.text === actionIdentifier;
+  else if (ts.isPropertyAccessExpression(x.expression)) return x.expression.getText() === actionBoundIdentifier
+  else return false;
+}
+
 function hasActionDecorators(decorators: ts.NodeArray<ts.Decorator> | undefined) {
   if (
     decorators &&
-    decorators.filter(
-      x => ts.isIdentifier(x.expression) && x.expression.text === actionIdentifier,
-    ).length > 0
+    decorators.filter( isActionDecorator ).length > 0
   ) {
     return true;
   }
@@ -355,7 +360,7 @@ function filterOutActionDecorators(
     decorators &&
     decorators.reduce<ts.Decorator[] | undefined>((acc, x) => {
       // skip @action decorator
-      if (ts.isIdentifier(x.expression) && x.expression.text === actionIdentifier) {
+      if (isActionDecorator(x)) {
         return acc;
       }
 

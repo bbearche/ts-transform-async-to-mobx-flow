@@ -29,6 +29,10 @@ export class Test {
         this.test = 5;
         yield Promise.resolve(100);
     }).call(this); }
+    funcActionBound() { return mobx_1.flow(function* funcActionBound_mobxFlow() {
+        this.test = 5;
+        yield Promise.resolve(100);
+    }).call(this); }
     funcBound = () => { return mobx_1.flow(function* funcBound_mobxFlow() {
         this.test = 5;
         yield Promise.resolve(100);
