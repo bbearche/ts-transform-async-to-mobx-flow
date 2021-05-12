@@ -4,20 +4,20 @@ exports[`Converts function marked as action 1`] = `
 "import * as mobx_1 from \\"mobx\\";
 declare let randomDecorator: any;
 import { action } from 'mobx';
-export const fn = (input) => { return mobx.flow(function* fn_mobxFlow() {
+export const fn = (input) => { return mobx_1.flow(function* fn_mobxFlow() {
     return yield Promise.resolve(input);
 }).call(this); };
-export const fn2 = function test(input) { return mobx.flow(function* test_mobxFlow() {
+export const fn2 = function test(input) { return mobx_1.flow(function* test_mobxFlow() {
     return yield Promise.resolve(input);
 }).call(this); };
-export const fn3 = function (input) { return mobx.flow(function* fn3_mobxFlow() {
+export const fn3 = function (input) { return mobx_1.flow(function* fn3_mobxFlow() {
     return yield Promise.resolve(input);
 }).call(this); };
 export class Test {
     test: number = 0;
     constructor() {
-        var nestedFlow = () => { return mobx.flow(function* nestedFlow_mobxFlow() {
-            var anotherNestedFlow = () => { return mobx.flow(function* anotherNestedFlow_mobxFlow() {
+        var nestedFlow = () => { return mobx_1.flow(function* nestedFlow_mobxFlow() {
+            var anotherNestedFlow = () => { return mobx_1.flow(function* anotherNestedFlow_mobxFlow() {
                 this.test = 5;
                 yield Promise.resolve(100);
             }).call(this); };
@@ -25,16 +25,16 @@ export class Test {
             yield anotherNestedFlow();
         }).call(this); };
     }
-    func() { return mobx.flow(function* func_mobxFlow() {
+    func() { return mobx_1.flow(function* func_mobxFlow() {
         this.test = 5;
         yield Promise.resolve(100);
     }).call(this); }
-    funcBound = () => { return mobx.flow(function* funcBound_mobxFlow() {
+    funcBound = () => { return mobx_1.flow(function* funcBound_mobxFlow() {
         this.test = 5;
         yield Promise.resolve(100);
     }).call(this); };
     @randomDecorator
-    funcNonBound = function (this: Test) { return mobx.flow(function* funcNonBound_mobxFlow() {
+    funcNonBound = function (this: Test) { return mobx_1.flow(function* funcNonBound_mobxFlow() {
         this.test = 5;
         yield Promise.resolve(100);
     }).call(this); };
