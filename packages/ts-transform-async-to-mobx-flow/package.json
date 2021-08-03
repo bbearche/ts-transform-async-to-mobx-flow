@@ -1,6 +1,5 @@
 {
   "name": "ts-transform-async-to-mobx-flow",
-  "version": "0.1.3",
   "description": "Typescript transformer for converting async functions into generators wrapped with mobx.flow",
   "keywords": [
     "mobx",
